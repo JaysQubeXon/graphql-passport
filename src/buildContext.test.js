@@ -1,4 +1,4 @@
-import passport from 'passport';
+import * as passport from 'passport';
 import buildContext from './buildContext';
 
 describe('context.authenticate', () => {
