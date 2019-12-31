@@ -1,14 +1,19 @@
 {
   "name": "graphql-passport",
-  "version": "0.1.5",
+  "version": "0.6.0",
   "description": "Strategy and utilities to use passport.js with GraphQL server",
   "main": "lib/index.js",
   "scripts": {
-    "build": "npm run clean && babel src -d lib --ignore src/**/*.test.js",
+    "build": "tsc --noEmit --pretty && npm run clean && npm run build:types && npm run build:js",
+    "build:types": "tsc --emitDeclarationOnly",
+    "build:js": "babel src --extensions '.ts,.tsx' --source-maps --out-dir lib --ignore src/**/*.test.ts --ignore __mocks__",
     "clean": "rimraf lib",
-    "lint": "eslint src",
+    "lint": "tsc --noEmit && eslint \"src/**/*.{js,ts}\" --quiet --fix",
+    "check-types": "tsc",
+    "watch-ts": "tsc -w",
     "prepublish": "npm run lint && npm run test && npm run build",
-    "test": "jest src"
+    "test": "jest src",
+    "test:watch": "jest src --watch"
   },
   "repository": {
     "type": "git",
@@ -23,22 +28,39 @@
   "author": "Johannes Kettmann",
   "license": "MIT",
   "dependencies": {
-    "passport-strategy": "^1.0.0",
-    "util": "^0.12.0"
+    "passport-strategy": "^1.0.0"
   },
   "devDependencies": {
-    "@babel/cli": "^7.4.4",
-    "@babel/core": "^7.4.5",
-    "@babel/plugin-transform-runtime": "^7.4.4",
-    "@babel/preset-env": "^7.4.5",
-    "@babel/runtime": "^7.4.5",
-    "babel-eslint": "^10.0.1",
-    "eslint": "^5.3.0",
-    "eslint-config-airbnb-base": "^13.1.0",
-    "eslint-plugin-import": "^2.17.2",
-    "jest": "^24.8.0"
+    "@babel/cli": "^7.7.7",
+    "@babel/core": "^7.7.7",
+    "@babel/plugin-transform-runtime": "^7.7.6",
+    "@babel/preset-env": "^7.7.7",
+    "@babel/preset-typescript": "^7.7.7",
+    "@babel/runtime": "^7.7.7",
+    "@types/jest": "^24.0.25",
+    "@typescript-eslint/eslint-plugin": "^2.14.0",
+    "babel-eslint": "^10.0.3",
+    "eslint": "^6.1.0",
+    "eslint-config-airbnb-typescript": "^6.3.1",
+    "eslint-plugin-import": "^2.19.1",
+    "jest": "^24.9.0",
+    "passport": "^0.4.1",
+    "typescript": "^3.7.4"
+  },
+  "optionalDependencies": {
+    "@types/express": "^4.17.1",
+    "@types/passport": "^1.0.1",
+    "@types/passport-strategy": "^0.2.35",
+    "@types/ws": "^6.0.3",
+    "express": "^4.17.1",
+    "graphql": "^14.5.8",
+    "subscriptions-transport-ws": "^0.9.16",
+    "ws": "7.x"
   },
   "peerDependencies": {
-    "passport": "0.x"
+    "express": "4.x",
+    "passport": "0.x",
+    "subscriptions-transport-ws": "0.x",
+    "ws": "7.x || 6.x"
   }
 }
